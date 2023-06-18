@@ -1,5 +1,5 @@
 import json, requests
-from api_keys import OPENAI_API_KEY
+from env import OPENAI_API_KEY
 from emotion_analysis import get_emotion
 
 api_url = "https://api.openai.com/v1/chat/completions"
