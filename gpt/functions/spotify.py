@@ -33,7 +33,13 @@ class SpotifyPlay:
             print("Track added to your queue!")
         else:
             print("Song not found.")
+        scope = "user-modify-playback-state"
+        sp = Spotify(
+            auth_manager=SpotifyOAuth(scope=scope, client_id=SPOTIFY_ID, client_secret=SPOTIFY_SECRET, redirect_uri=URI))
+        sp.next_track(device_id=SPOTIFY_DEVICE)
+
         return f"Added to queue - {song}"
+
 
 
 class SpotifySkip:

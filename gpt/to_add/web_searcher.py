@@ -54,13 +54,8 @@ def get_weather(city, api_key):
         print(f"Humidity: {humidity}%")
         print(f"Wind Speed: {wind_speed} m/s")
 
-        return {
-            'main': main_weather,
-            'description': description,
-            'temperature': temperature,
-            'humidity': humidity,
-            'wind_speed': wind_speed
-        }
+        return f"Weather in {city}: {main_weather}, {description}, {temperature - 273} degrees Celsius, {humidity}% humidity, {wind_speed} meters per second wind speed"
+
     else:
         print("Error fetching weather. Please try again later.")
 

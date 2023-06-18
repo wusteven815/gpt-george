@@ -19,7 +19,7 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 16000
-SILENCE_LIMIT = 0.4
+SILENCE_LIMIT = 0.8
 PREV_AUDIO = 0.2  # Previous audio (in seconds) to prepend. When noise is detected, how much of previously recorded
 FILENAME = "input.wav"
 openai.api_key = OPENAI_KEY
@@ -40,13 +40,6 @@ def audio_int(num_samples=50):
                     rate=RATE,
                     input=True,
                     frames_per_buffer=CHUNK)
-
-    # values = [math.sqrt(abs(audioop.avg(stream.read(CHUNK), 2)))
-    #           for x in range(num_samples)]
-    # values = sorted(values, reverse=True)
-    # r = sum(values[:int(num_samples * 0.2)]) / int(num_samples * 0.2)
-    # print(" Finished ")
-    # print(" Average audio intensity is ", r)
 
     values = []
     for i in range(num_samples):
@@ -126,10 +119,7 @@ def azure_speak(response):
 
     speech_config.speech_synthesis_voice_name = 'en-US-GuyNeural'
     speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
-    speech_synthesis_result = speech_synthesizer.speak_text_async(response).get()
-
-    if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-        print(f"S{speech_synthesis_result}")
+    speech_synthesizer.speak_text_async(response).get()
 
 
 def start_audio_task():
@@ -166,7 +156,10 @@ def start_audio_task():
                     # send the wav file to hume here
                     response = transcribe_audio(FILENAME)
                     print(response)
-                    azure_speak(response)
+                    output_voice = gpt.request(response)
+                    if output_voice is not None and output_voice not in ("None", ""):
+                        print(f"'{output_voice}'")
+                        azure_speak(output_voice)
 
                     break
         except KeyboardInterrupt:
