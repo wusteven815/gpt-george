@@ -5,3 +5,4 @@ env.py
 input.wav
 output.mp3
 *.json
+.cache
