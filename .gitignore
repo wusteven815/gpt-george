@@ -2,5 +2,5 @@
 .vscode/
 
 env.py
-api_keys.py
+saved_speech.wav
 *.json

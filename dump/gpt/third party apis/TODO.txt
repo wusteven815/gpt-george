@@ -1,5 +1,0 @@
-- make gmail_handler functional
-- possibly fix google maps directions function in google_maps.py 
-- possibly integrate notification_sender.py with google calendar
-- add other gmail functions like managing inbox and stuff
-- add web searcher summarizer  ? would be crazy

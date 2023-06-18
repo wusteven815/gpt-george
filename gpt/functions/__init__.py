@@ -1,5 +1,5 @@
-from functions.email import *
-from functions.spotify import *
+from .email import *
+from .spotify import *
 
 
 details = [

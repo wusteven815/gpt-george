@@ -1,5 +1,5 @@
-from functions._utils import create_arg
-from functions._utils import create_config
+from ._utils import create_arg
+from ._utils import create_config
 
 
 class EmailSend:

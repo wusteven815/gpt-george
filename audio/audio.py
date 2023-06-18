@@ -10,6 +10,8 @@ import numpy
 import pvporcupine
 import pyaudio
 from pvrecorder import PvRecorder
+from gpt import GPTHandler
+from env import PORCUPINE_KEY, OPENAI_KEY
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -18,10 +20,10 @@ RATE = 16000
 SILENCE_LIMIT = 0.4
 PREV_AUDIO = 0.2  # Previous audio (in seconds) to prepend. When noise is detected, how much of previously recorded
 FILENAME = "saved_speech.wav"
+openai.api_key = OPENAI_KEY
 
 
 # audio is prepended. This helps to prevent chopping the beginning of the phrase.
-
 def audio_int(num_samples=50):
     """ Gets average audio intensity of your mic sound. You can use it to get
         average intensities while you're talking and/or silent. The average
@@ -79,7 +81,7 @@ def listening(threshold):
         db = 20 * math.log10(rms)
         slid_win.append(db)
         # print(sum([x > threshold for x in slid_win]))
-        if keyboard.is_pressed('enter'):
+        if keyboard.is_pressed("enter"):
             break
         if sum([x > threshold for x in slid_win]) > 0:
             if not started:
@@ -99,7 +101,7 @@ def listening(threshold):
 
 def save_record(data, p):
     # Saves mic data to temporary WAV file.
-    file = wave.open(FILENAME, 'wb')
+    file = wave.open(FILENAME, "wb")
     file.setnchannels(CHANNELS)
     file.setsampwidth(p.get_sample_size(FORMAT))
     file.setframerate(RATE)
@@ -115,12 +117,15 @@ def transcribe_audio(filename):
         return transcript["text"]
 
 
-def main():
+def start_audio_task():
+
+    gpt = GPTHandler()
+
     threshold = audio_int()
     print(f"Ready - threshold is: {threshold}")
     porcupine = pvporcupine.create(
-        access_key="",
-        keyword_paths=["HeyGeorge.ppn"])
+        access_key=PORCUPINE_KEY,
+        keyword_paths=["audio/HeyGeorge.ppn"])
 
     recorder = PvRecorder(
         device_index=0,
@@ -143,6 +148,7 @@ def main():
                 listen_thread.join()
                 # send the wav file to hume here
                 response = transcribe_audio(FILENAME)
+                gpt.request(response)
                 print(response)
 
                 break
@@ -152,7 +158,3 @@ def main():
     finally:
         recorder.delete()
         porcupine.delete()
-
-
-if __name__ == '__main__':
-    main()

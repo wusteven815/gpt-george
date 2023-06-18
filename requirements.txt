@@ -1,0 +1,8 @@
+keyboard
+numpy
+openai
+pvporcupine
+pvrecorder
+pyaudio
+requests
+spotipy
