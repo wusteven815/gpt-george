@@ -4,6 +4,7 @@ from .maps import *
 from .weather import *
 from .math import *
 from .news import *
+from .reminders import *
 
 details = [
     EmailSend,
@@ -12,6 +13,7 @@ details = [
     WeatherGet,
     MathMode,
     NewsGet,
+    SetReminder,
 ]
 
 configs = []

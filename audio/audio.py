@@ -159,9 +159,8 @@ def start_audio_task():
                     response = transcribe_audio(FILENAME)
                     print(response)
                     # output_voice = gpt.request(response)
-                    output_voice = hume_controller.get_result()
+                    output_voice = hume_controller.get_result(response, gpt)
                     if output_voice is not None and output_voice not in ("None", ""):
-                        print(f"'{output_voice}'")
                         azure_speak(output_voice)
                         break
         except KeyboardInterrupt:

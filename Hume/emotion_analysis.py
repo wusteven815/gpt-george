@@ -1,9 +1,9 @@
-from utilities import get_emotions
+from .utilities import get_emotions
 from hume import HumeBatchClient
 from hume.models.config import ProsodyConfig
 from env import HUME_API_KEY
 
-def get_emotion(file):
+def get_emotion(text, file):
     client = HumeBatchClient(HUME_API_KEY)
 
     files = [file]
@@ -16,4 +16,7 @@ def get_emotion(file):
     print("Job completed with status: ", job.get_status())
 
     full_predictions = job.get_predictions()
-    return(get_emotions(full_predictions))
+    from pprint import pprint
+    # print(type(full_predictions))
+    # pprint(full_predictions)
+    return(get_emotions(text, full_predictions))
