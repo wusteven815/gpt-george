@@ -1,6 +1,7 @@
 import requests
+from api_keys import math_api
 
-APP_ID = "WQJA83-QWP9E3X3TW"
+APP_ID = math_api
 
 def get_wolframalpha_response(input):
     url = f"https://www.wolframalpha.com/api/v1/result?input={input}&appid={APP_ID}&format=plaintext"

@@ -2,3 +2,5 @@
 .vscode/
 
 env.py
+*.json
+api_keys.py

@@ -1,10 +1,11 @@
-CLIENT_ID = "a0b604295381414db696039c8733368d"
-CLIENT_SECRET = "ee00319c46af48f6a898f2339612c742"
-URI = "http://localhost:8000/callback"
-DEVICE_ID = "90ad67d62cc91f4a155fb9c8a2b338fc1994306d"
-
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from api_keys import spotify_id, spotify_secret, spotify_device
+
+CLIENT_ID = spotify_id
+CLIENT_SECRET = spotify_secret
+URI = "http://localhost:8000/callback"
+DEVICE_ID = spotify_device
 
 def getDevices():
     scope = "user-read-playback-state"

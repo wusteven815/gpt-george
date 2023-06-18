@@ -1,8 +1,9 @@
 from googlesearch import search
 import requests
+from api_keys import news_api, weather_api
 
-NEWS_API = "4c184c03dd2148558348f4da2b27e43e"
-WEATHER_API = "141f20631a545e286515d43bed838698"
+NEWS_API=news_api
+WEATHER_API=weather_api
 
 def google_search(keyword):
     query = keyword

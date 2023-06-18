@@ -1,7 +1,8 @@
 import smtplib
+from api_keys import app_password
 
 EMAIL = "richard.yunqi.zhu@gmail.com"
-PASSWORD = "borugldqumzdtrdh"
+PASSWORD = app_password
 
 
 def sendMail(toAddrs, subject, body):
