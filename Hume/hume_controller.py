@@ -12,7 +12,7 @@ def get_result(voice, gpt):
     task = get_emotion(voice, file)
     data = json.loads(task)
     print(data)
-    if len(data["emotions"]) != 0:
+    if len(data["emotions"]) != 0 and usingHume:
         emotions_text = " and ".join(data["emotions"]).lower()
         prompt = voice + " Reply to me as if I spoke with " + emotions_text + " in my voice."
     else:
