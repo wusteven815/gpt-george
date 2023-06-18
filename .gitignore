@@ -3,3 +3,4 @@
 
 env.py
 api_keys.py
+*.json
