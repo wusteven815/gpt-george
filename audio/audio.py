@@ -14,6 +14,7 @@ from gpt import GPTHandler
 from env import PORCUPINE_KEY, OPENAI_KEY, AZURE_KEY, AZURE_REGION
 import azure.cognitiveservices.speech as speechsdk
 from os import system
+from Hume import hume_controller
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -22,6 +23,7 @@ RATE = 16000
 SILENCE_LIMIT = 0.4
 PREV_AUDIO = 0.2  # Previous audio (in seconds) to prepend. When noise is detected, how much of previously recorded
 FILENAME = "input.wav"
+RESPONSE = ''
 openai.api_key = OPENAI_KEY
 
 
@@ -166,6 +168,8 @@ def start_audio_task():
                     # send the wav file to hume here
                     response = transcribe_audio(FILENAME)
                     print(response)
+                    chatbot = hume_controller.get_result()
+                    RESPONSE = response
                     azure_speak(response)
 
                     break
