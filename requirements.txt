@@ -7,3 +7,7 @@ pvrecorder
 pyaudio
 requests
 spotipy
+hume
+pygame
+requests
+urllib3
