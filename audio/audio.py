@@ -154,8 +154,10 @@ def start_audio_task():
                     response = transcribe_audio(FILENAME)
                     output_voice = gpt.request(response)
                     print(response)
-                    gTTS(text=output_voice, lang="en", slow=False).save("output.mp3")
-                    system("output.mp3")
+                    if output_voice is not None and output_voice not in ("None", ""):
+                        print(f"'{output_voice}'")
+                        gTTS(text=output_voice, lang="en", slow=False).save("output.mp3")
+                        system("output.mp3")
 
                     break
         except KeyboardInterrupt:

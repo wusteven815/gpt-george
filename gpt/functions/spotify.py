@@ -33,7 +33,7 @@ class SpotifyPlay:
             print("Track added to your queue!")
         else:
             print("Song not found.")
-        return f"Now playing - {song}"
+        return f"Added to queue - {song}"
 
 
 class SpotifySkip:
