@@ -2,5 +2,6 @@
 .vscode/
 
 env.py
-saved_speech.wav
+input.wav
+output.mp3
 *.json

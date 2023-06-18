@@ -12,6 +12,8 @@ import pyaudio
 from pvrecorder import PvRecorder
 from gpt import GPTHandler
 from env import PORCUPINE_KEY, OPENAI_KEY
+from gtts import gTTS
+from os import system
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -19,7 +21,7 @@ CHANNELS = 1
 RATE = 16000
 SILENCE_LIMIT = 0.4
 PREV_AUDIO = 0.2  # Previous audio (in seconds) to prepend. When noise is detected, how much of previously recorded
-FILENAME = "saved_speech.wav"
+FILENAME = "input.wav"
 openai.api_key = OPENAI_KEY
 
 
@@ -130,31 +132,34 @@ def start_audio_task():
     recorder = PvRecorder(
         device_index=0,
         frame_length=porcupine.frame_length)
-    recorder.start()
 
-    try:
-        while True:
-            pcm = recorder.read()
-            result = porcupine.process(pcm)
+    while True:
+        recorder.start()
 
-            if result >= 0:
-                recorder.stop()
+        try:
+            while True:
+                pcm = recorder.read()
+                result = porcupine.process(pcm)
 
-                listen_thread = threading.Thread(target=listening, args=(threshold,))
-                listen_thread.start()
+                if result >= 0:
+                    recorder.stop()
 
-                print("GeorgeAI recording voice - press enter to stop early")
+                    listen_thread = threading.Thread(target=listening, args=(threshold,))
+                    listen_thread.start()
 
-                listen_thread.join()
-                # send the wav file to hume here
-                response = transcribe_audio(FILENAME)
-                gpt.request(response)
-                print(response)
+                    print("GeorgeAI recording voice - press enter to stop early")
 
-                break
+                    listen_thread.join()
+                    # send the wav file to hume here
+                    response = transcribe_audio(FILENAME)
+                    output_voice = gpt.request(response)
+                    print(response)
+                    gTTS(text=output_voice, lang="en", slow=False).save("output.mp3")
+                    system("output.mp3")
 
-    except KeyboardInterrupt:
-        print('Stopping ...')
-    finally:
-        recorder.delete()
-        porcupine.delete()
+                    break
+        except KeyboardInterrupt:
+            print('GPTGeorge shutting down')
+            break
+    recorder.delete()
+    porcupine.delete()

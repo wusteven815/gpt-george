@@ -39,10 +39,13 @@ class GPTHandler:
             func_res = functions[func_name](**kwargs)
             if func_res is not None:
                 self.messages.append({"role": "assistant", "content": func_res})
+                return func_res
             else:
                 self.messages.pop()
+                return None
 
         else:
             print("- Non function call -")
             print(response_message["content"])
             self.messages.append({"role": "assistant", "content": response_message["content"]})
+            return response_message["content"]
