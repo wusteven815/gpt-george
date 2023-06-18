@@ -1,8 +1,8 @@
 import json
 from env import OPENAI_KEY
-from emotion_analysis import get_emotion
-from ..gpt import gpt
-from ..audio import audio
+from .emotion_analysis import get_emotion
+from gpt import gpt
+from audio import audio
 
 api_url = "https://api.openai.com/v1/chat/completions"
 

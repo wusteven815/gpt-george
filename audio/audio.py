@@ -124,11 +124,12 @@ def azure_speak(response):
     speech_synthesizer.speak_text_async(response).get()
 
 
-def start_audio_task():
+def start_audio_task(set_text):
 
     gpt = GPTHandler()
 
     threshold = audio_int()
+    set_text("user", f"Ready! Ambient threshold is {threshold}")
     print(f"Ready - threshold is: {threshold}")
     porcupine = pvporcupine.create(
         access_key=PORCUPINE_KEY,
@@ -153,15 +154,18 @@ def start_audio_task():
                     listen_thread.start()
 
                     print("GeorgeAI recording voice - press enter to stop early")
+                    set_text("user", "Hey George...")
 
                     listen_thread.join()
                     # send the wav file to hume here
                     response = transcribe_audio(FILENAME)
+                    set_text("user", response)
                     print(response)
-                    # output_voice = gpt.request(response)
-                    output_voice = hume_controller.get_result()
+                    output_voice = gpt.request(response)
+                    # output_voice = hume_controller.get_result()
                     if output_voice is not None and output_voice not in ("None", ""):
                         print(f"'{output_voice}'")
+                        set_text("gpt", output_voice)
                         azure_speak(output_voice)
                         break
         except KeyboardInterrupt:

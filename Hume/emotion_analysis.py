@@ -1,4 +1,4 @@
-from utilities import get_emotions
+from .utilities import get_emotions
 from hume import HumeBatchClient
 from hume.models.config import ProsodyConfig
 from env import HUME_API_KEY
