@@ -11,8 +11,8 @@ import pvporcupine
 import pyaudio
 from pvrecorder import PvRecorder
 from gpt import GPTHandler
-from env import PORCUPINE_KEY, OPENAI_KEY
-from gtts import gTTS
+from env import PORCUPINE_KEY, OPENAI_KEY, AZURE_KEY, AZURE_REGION
+import azure.cognitiveservices.speech as speechsdk
 from os import system
 
 CHUNK = 1024
@@ -119,6 +119,19 @@ def transcribe_audio(filename):
         return transcript["text"]
 
 
+def azure_speak(response):
+    speech_config = speechsdk.SpeechConfig(subscription=AZURE_KEY,
+                                           region=AZURE_REGION)
+    audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+
+    speech_config.speech_synthesis_voice_name = 'en-US-GuyNeural'
+    speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+    speech_synthesis_result = speech_synthesizer.speak_text_async(response).get()
+
+    if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+        print(f"S{speech_synthesis_result}")
+
+
 def start_audio_task():
 
     gpt = GPTHandler()
@@ -152,12 +165,8 @@ def start_audio_task():
                     listen_thread.join()
                     # send the wav file to hume here
                     response = transcribe_audio(FILENAME)
-                    output_voice = gpt.request(response)
                     print(response)
-                    if output_voice is not None and output_voice not in ("None", ""):
-                        print(f"'{output_voice}'")
-                        gTTS(text=output_voice, lang="en", slow=False).save("output.mp3")
-                        system("output.mp3")
+                    azure_speak(response)
 
                     break
         except KeyboardInterrupt:
