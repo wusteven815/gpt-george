@@ -1,7 +1,7 @@
 from utilities import get_emotions
 from hume import HumeBatchClient
 from hume.models.config import ProsodyConfig
-from api_keys import HUME_API_KEY
+from env import HUME_API_KEY
 
 def get_emotion(file):
     client = HumeBatchClient(HUME_API_KEY)
