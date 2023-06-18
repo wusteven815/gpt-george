@@ -1,4 +1,4 @@
-import json, openai, requests
+import json, requests
 from api_keys import OPENAI_API_KEY
 from emotion_analysis import get_emotion
 
@@ -36,7 +36,5 @@ headers = {
 
 response = requests.post(api_url, headers=headers, json=payload)
 gpt_response = response.json()
-print(OPENAI_API_KEY)
-print(gpt_response)
 result = gpt_response['choices'][0]['message']['content']
 print(f"\nChatbot: {result}")
